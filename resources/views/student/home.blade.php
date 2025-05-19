@@ -1,35 +1,3 @@
-{{-- @extends('layouts.topbar')
-
-@section('content')
-<div class="container mx-auto px-4 py-10">
-    <h1 class="text-4xl font-extrabold mb-10 text-indigo-700">我的課程清單</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        @foreach ($courses as $course)
-            @php
-                $isTa = $course->taID == session('user_id');
-            @endphp
-            <div class="bg-white border p-6 rounded-xl shadow">
-                <h2 class="text-xl font-bold mb-2">{{ $course->name }}</h2>
-                <p class="text-sm text-gray-600 mb-4">
-                    👨‍🏫 授課老師：{{ $course->teacher->name }}
-                </p>
-
-                <a href="{{ route('student.course.detail', $course->courseID) }}"
-                   class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-full">
-                    查看公告與作業
-                </a>
-
-                @if($isTa)
-                    <a href="{{ route('teacher.course.detail', $course->courseID) }}"
-                       class="inline-block ml-2 px-4 py-2 bg-green-600 text-white rounded-full">
-                        (TA) 管理課程
-                    </a>
-                @endif
-            </div>
-        @endforeach
-    </div>
-</div>
-@endsection --}}
 @extends('layouts.topbar')
 
 @section('content')

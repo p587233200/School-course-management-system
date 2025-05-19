@@ -13,12 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GradeNotification;
 use App\Mail\AssignmentGradedMail;
-
 use Spatie\SimpleExcel\SimpleExcelWriter;
-
-
-
-
 use ZipArchive;
 
 class TeacherAssignmentController extends Controller
@@ -75,12 +70,7 @@ class TeacherAssignmentController extends Controller
     // 查看學生繳交情況
     public function submissions($assignmentID)
     {
-    //     $assignment = Assignment::with('submissions')->findOrFail($assignmentID);
-    //     return view('teacher.assignment_submissions', compact('assignment'));
         $assignment = Assignment::with(['submissions', 'course.students'])->findOrFail($assignmentID);
-        // $submission = $assignment->submissions->firstWhere('studentID', $student->studentID);
-
-
         return view('teacher.assignment_submissions', compact('assignment'));
     }
 
@@ -118,36 +108,26 @@ class TeacherAssignmentController extends Controller
     }
     public function viewGrade($assignmentID)
     {
-        // $studentID = session('user_id');
-    
-        // // 獲取個人作業
-        // $homework = DB::table('student_submit_assignment')
-        //     ->where('studentID', $studentID)
-        //     ->where('assignmentID', $assignment->assignmentID)
-        //     ->first();
 
-        // $myScore = $homework -> score;
-        // $myfeedback = $homework -> feedback;
         $assignment = Assignment::with(['submissions'])->findOrFail($assignmentID);
         
-        // dd($assignment);
         // 獲取全班作業分數
-        // $allScores = DB::table('student_submit_assignment')
-        //     ->where('assignmentID', $assignment->assignmentID)
-        //     ->pluck('score')
-        //     ->toArray();
+        $allScores = DB::table('student_submit_assignment')
+            ->where('assignmentID', $assignment->assignmentID)
+            ->pluck('score')
+            ->toArray();
         $allScores = $assignment->submissions->pluck('score')->filter()->toArray();
     
         // 計算分數區間
-        // $scoreDistribution = array_count_values($allScores);
-        $scoreDistribution=[
-            60 => 5,  
-            65 => 3, 
-            70 => 13, 
-            80 => 18, 
-            90 => 10, 
-            100 => 4 
-        ];
+        $scoreDistribution = array_count_values($allScores);
+        // $scoreDistribution=[
+        //     60 => 5,  
+        //     65 => 3, 
+        //     70 => 13, 
+        //     80 => 18, 
+        //     90 => 10, 
+        //     100 => 4 
+        // ];
         
         return view('teacher.grade', compact('assignment', 'scoreDistribution'));
     }
@@ -181,8 +161,4 @@ class TeacherAssignmentController extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
-    // public function downloadGrades($assignmentID)
-    // {
-    //     return Excel::download(new AssignmentGradesExport($assignmentID), 'assignment_grades.xlsx');
-    // }
 }
