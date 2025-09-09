@@ -12,22 +12,37 @@ use App\Models\Course;
 class StudentController extends Controller
 {
     public function home()
-    {
-        $studentID = session('user_id'); // 假設 session 有存學號
+    {   
+        // 先檢查使用者是否登入。
+        // 取得對應的學生資料。
+        // 查詢該學生的課程和擔任 TA 的課程。
+        // 將資料傳給前端頁面顯示。
 
-        $myCourses = Student::find($studentID)
-                            ->courses()      
-                            ->with(['teacher'])
-                            ->get();
         
-        $taCourses = Course::where('taID', $studentID)
-                    ->with(['teacher','ta'])
-                    ->get();
+        // $studentID = session('user_id'); // 轉成字串
+        $studentID = (string) session('user_id');
 
-        // $courses = $myCourses->merge($taCourses)->unique('courseID');
-    
+        if (!$studentID) {
+            abort(403, 'User not logged in');
+        }
+        $student = Student::find($studentID);
+        if (!$student) {
+            abort(404, 'Student not found');
+        }
+        
+
+        $myCourses = $student->courses()
+                     ->with(['teacher'])
+                     ->get();
+
+        $taCourses = Course::where('taID', $studentID)
+                        ->with(['teacher','ta'])
+                        ->get();
+
+
         return view('student.home', compact('myCourses','taCourses'));
     }
+
 
     public function courseDetail($courseID)
     {

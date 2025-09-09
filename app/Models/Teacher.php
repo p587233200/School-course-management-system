@@ -8,6 +8,7 @@ class Teacher extends Model
 {
     protected $table = 'teacher';
     protected $primaryKey = 'teacherID';
+    protected $keyType = 'string'; // 明確指定主鍵型別
     public $incrementing = false;
     public $timestamps = false;
 
