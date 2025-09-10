@@ -11,8 +11,8 @@ use App\Models\Course;
 
 class StudentController extends Controller
 {
-    public function home()
-    {   
+    //首頁
+    public function home(){   
         // 先檢查使用者是否登入。
         // 取得對應的學生資料。
         // 查詢該學生的課程和擔任 TA 的課程。
@@ -43,9 +43,8 @@ class StudentController extends Controller
         return view('student.home', compact('myCourses','taCourses'));
     }
 
-
-    public function courseDetail($courseID)
-    {
+    //課程細節
+    public function courseDetail($courseID){
         $course = DB::table('course')->where('courseID', $courseID)->first();
 
         $announcements = DB::table('announcement')->where('courseID', $courseID)->get();
@@ -54,8 +53,7 @@ class StudentController extends Controller
         return view('student.course_detail', compact('course', 'announcements', 'assignments'));
     }
 
-    public function uploadAssignmentForm(Assignment $assignment)
-    {
+    public function uploadAssignmentForm(Assignment $assignment){
         if (!$assignment) {
             abort(404, '作業不存在');
         }
@@ -63,8 +61,7 @@ class StudentController extends Controller
         return view('student.upload', compact('assignment'));
     }
 
-    public function submitAssignment(Request $request, Assignment $assignment)
-    {
+    public function submitAssignment(Request $request, Assignment $assignment){
         $request->validate([
             'report' => 'required|file|max:10240', // 限 10MB
         ]);
@@ -92,8 +89,7 @@ class StudentController extends Controller
             ->with('success', '作業上傳成功');
     }
 
-    public function viewGrade($assignmentID)
-    {
+    public function viewGrade($assignmentID){
         $studentID = session('user_id');
     
         // 獲取個人作業

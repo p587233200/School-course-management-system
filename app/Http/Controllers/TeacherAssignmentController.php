@@ -19,15 +19,13 @@ use ZipArchive;
 class TeacherAssignmentController extends Controller
 {
     // 顯示新增作業表單
-    public function create($courseID)
-    {
+    public function create($courseID){
         $course = Course::findOrFail($courseID);
         return view('teacher.assignment_create', compact('course'));
     }
 
     // 儲存新作業
-    public function store(Request $request, $courseID)
-    {
+    public function store(Request $request, $courseID){
         $request->validate([
             'title' => 'required',
             'content' => 'required',
@@ -45,15 +43,13 @@ class TeacherAssignmentController extends Controller
     }
 
     // 編輯作業表單
-    public function edit($assignmentID)
-    {
+    public function edit($assignmentID){
         $assignment = Assignment::with('course')->findOrFail($assignmentID);
         return view('teacher.assignment_edit', compact('assignment'));
     }
 
     // 更新作業資料
-    public function update(Request $request, $assignmentID)
-    {
+    public function update(Request $request, $assignmentID){
         $assignment = Assignment::findOrFail($assignmentID);
 
         $request->validate([
@@ -68,14 +64,12 @@ class TeacherAssignmentController extends Controller
     }
 
     // 查看學生繳交情況
-    public function submissions($assignmentID)
-    {
+    public function submissions($assignmentID){
         $assignment = Assignment::with(['submissions', 'course.students'])->findOrFail($assignmentID);
         return view('teacher.assignment_submissions', compact('assignment'));
     }
 
-    public function fixScoreSubmission(Request $request)
-    {
+    public function fixScoreSubmission(Request $request){
         $request->validate([
             'score' => 'required|integer|min:0|max:100',
             'studentID' => 'required|string',
@@ -92,8 +86,8 @@ class TeacherAssignmentController extends Controller
 
         return redirect()->back()->with('success', '評分已更新');
     }
-    public function sendEmail(Request $request)
-    {
+
+    public function sendEmail(Request $request){
         $student = Student::findOrFail($request->studentID);
         $assignment = Assignment::findOrFail($request->assignmentID);
         $submission = $assignment->submissions()->where('studentID', $student->studentID)->first();
@@ -106,8 +100,8 @@ class TeacherAssignmentController extends Controller
         
         return back()->with('success', 'Email 已寄送給 ' . $student->name);
     }
-    public function viewGrade($assignmentID)
-    {
+    
+    public function viewGrade($assignmentID){
 
         $assignment = Assignment::with(['submissions'])->findOrFail($assignmentID);
         
@@ -131,10 +125,8 @@ class TeacherAssignmentController extends Controller
         
         return view('teacher.grade', compact('assignment', 'scoreDistribution'));
     }
-
     //全班成績輸出成 Excel
-    public function downloadGrades($assignmentID)
-    {
+    public function downloadGrades($assignmentID){
         $filePath = storage_path("app/public/assignment_{$assignmentID}_grades.csv");
 
         $assignment = Assignment::findOrFail($assignmentID);

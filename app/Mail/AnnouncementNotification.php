@@ -19,8 +19,7 @@ class AnnouncementNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($course, $announcement)
-    {
+    public function __construct($course, $announcement){
 
         $this->course = $course;
         $this->announcement = $announcement;
@@ -30,8 +29,7 @@ class AnnouncementNotification extends Mailable
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
-    {
+    public function envelope(): Envelope{
         return new Envelope(
             subject: $this->announcement->title,  // 使用公告的標題作為郵件主題
         );
@@ -40,8 +38,7 @@ class AnnouncementNotification extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
+    public function content(): Content{
         return new Content(
             view: 'emails.announcement',  // 指定郵件的顯示視圖
             with: [
@@ -56,8 +53,7 @@ class AnnouncementNotification extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
-    {
+    public function attachments(): array{
         return [];
     }
 }

@@ -9,13 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
-    {
+    public function showLoginForm(){
         return view('auth.login');
     }
 
-    public function login(Request $request)
-    {
+    public function login(Request $request){
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required',
@@ -55,8 +53,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function register(Request $request)
-    {
+    public function register(Request $request){
         $validated = $request->validate([
             'role' => 'required|in:student,teacher',
             'name' => 'required|string|max:100',
@@ -97,6 +94,7 @@ class AuthController extends Controller
         return redirect()->route('login_form')->with('success', '註冊成功，請登入');
         
     }
+    
     public function logout() {
         session()->flush(); // 清除所有 session
         return redirect()->route('login_form')->with('success', '登出成功'); // 登出後導回登入頁

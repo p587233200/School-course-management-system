@@ -7,8 +7,7 @@ use App\Models\Course;
 
 class TeacherController extends Controller
 {
-    public function home()
-    {
+    public function home(){
         $teacherID = session('user_id');
 
         // 使用 Course 模型進行查詢
@@ -19,8 +18,7 @@ class TeacherController extends Controller
         return view('teacher.home', compact('courses'));
     }
 
-    public function courseDetail($courseID)
-    {
+    public function courseDetail($courseID){
         // 使用 Course 模型並載入作業與提交資料
         $course = Course::with(['assignments','announcements'])->findOrFail($courseID);
 

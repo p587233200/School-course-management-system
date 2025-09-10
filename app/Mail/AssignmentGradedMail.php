@@ -19,8 +19,7 @@ class AssignmentGradedMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($assignment, $submission)
-    {
+    public function __construct($assignment, $submission){
         $this->assignment = $assignment;
         $this->submission = $submission;
     }
@@ -28,8 +27,7 @@ class AssignmentGradedMail extends Mailable
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
-    {
+    public function envelope(): Envelope{
         return new Envelope(
             subject: '作業成績通知',
         );
@@ -38,8 +36,7 @@ class AssignmentGradedMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
+    public function content(): Content{
         return new Content(
             view: 'emails.assignment_graded',
             with: [
@@ -54,8 +51,7 @@ class AssignmentGradedMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
-    {
+    public function attachments(): array{
         return [];
     }
 }

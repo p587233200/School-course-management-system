@@ -12,15 +12,12 @@ use App\Mail\AnnouncementNotification;
 
 class TeacherAnnouncementController extends Controller
 {
-    public function createAnnouncement($courseID)
-    {
+    public function createAnnouncement($courseID){
         $course = Course::findOrFail($courseID);
         return view('teacher.announcement_create', compact('course'));
     }
-
     // 儲存公告並寄送 email
-    public function storeAnnouncement(Request $request, $courseID)
-    {
+    public function storeAnnouncement(Request $request, $courseID){
         $request->validate([
             'title' => 'required',
             'content' => 'required'
@@ -47,14 +44,12 @@ class TeacherAnnouncementController extends Controller
         return view('teacher.course_detail', compact('course'))->with('success', '公告發布並寄送成功！');
     }
 
-    public function editAnnouncement($announcementID)
-    {
+    public function editAnnouncement($announcementID){
         $announcement = Announcement::with('course')->findOrFail($announcementID);
         return view('teacher.announcement_edit', compact('announcement'));
     }
 
-    public function updateAnnouncement(Request $request, $announcementID)
-    {
+    public function updateAnnouncement(Request $request, $announcementID){
         $request->validate([
             'title' => 'required',
             'content' => 'required'
